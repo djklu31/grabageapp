@@ -1,0 +1,26 @@
+<ion-view title="Welcome to Daytrader">
+
+  <ion-content padding="true" style="background: #886AEA" class="slide-left-right">
+
+    <img ng-src="img/daytraderlogo.png" style="width: 100%; margin-top: 35%">
+
+    <form name="loginForm" style="margin-top: 15%" ng-submit="checkUser()">
+      <div class="card">
+        <label class="item item-input">
+          <span class="input-label">Username</span>
+          <input type="text" ng-model="user.username"required>
+        </label>
+        <label class="item item-input">
+          <span class="input-label">Password</span>
+          <input type="password" ng-model="user.password" required>
+        </label>
+      </div>
+
+      <button class="button-block button button-dark" type="submit">Login</button>
+    </form>
+
+    <div class="center"><a ui-sref="createusermenu.adduser" style="color: white">Create a new account</a></div>
+
+  </ion-content>
+
+</ion-view>

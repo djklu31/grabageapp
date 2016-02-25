@@ -1,0 +1,41 @@
+<ion-view view-title="Edit Profile">
+  <ion-content padding="true">
+
+
+    <p class="center">Please fill out all of the boxes.</p>
+
+    <form name="EditProfileForm" class="list list-inset" novalidate>
+      <label class="item item-input">
+        <span class="input-label">Username</span>
+        <input type="text" ng-model="user.username" required>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Password</span>
+        <input type="password" ng-model="user.password" required>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Email</span>
+        <input type="email" name="email" ng-model="user.email" required>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Phone Number</span>
+        <input type="tel" name="phonenumber" ng-model="user.phonenumber" ng-minlength="14" ng-maxlength="14" ui-mask="(999) 999-9999"  ui-mask-placeholder ui-mask-placeholder-char="_" required>
+      </label>
+    <span class="item item-input">
+      <span class="input-label ">Location</span>
+      <input type="text" ng-model="user.location" required>
+      <button style="margin-right: 50px" class="button button-dark {{gpsLoad}}" on-tap="getGPS()"></button>
+    </span>
+
+      <p style="color: red" ng-show="EditProfileForm.email.$invalid && !AddUserForm.email.$pristine">* Email should be in the correct format</p>
+      <p style="color: red" ng-show="EditProfileForm.phonenumber.$invalid && !AddUserForm.phonenumber.$pristine">* Phone should contain 10-digits without dashes (include area code)</p>
+
+    </form>
+
+    <button class="button button-block button-dark" ng-click="editUser()" ng-disabled="EditProfileForm.$invalid">
+      Edit Profile
+    </button>
+
+
+  </ion-content>
+</ion-view>

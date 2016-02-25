@@ -1,0 +1,24 @@
+/**
+ * Created by kennylu on 2/1/16.
+ */
+
+<ion-view cache-view="false" title="Get Users">
+
+  <ion-content padding="true">
+
+    <div ng-repeat="users in userInfo">
+
+      <h3>User {{$index + 1}}:</h3>
+      <label>Name:</label>{{users.username}}
+      <label>Email:</label>{{users.email}}
+      <label>Phone Number:</label>{{users.phonenumber}}
+      <label>Location:</label>{{users.location}}
+      &nbsp
+      <button class="button button-small button-assertive" ng-click="deleteUser(users._id)">Delete User</button>
+
+    </div>
+
+
+  </ion-content>
+
+</ion-view>

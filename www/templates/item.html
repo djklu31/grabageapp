@@ -1,0 +1,33 @@
+<ion-view title="{{itemname}} by {{brand}}">
+  <ion-content padding>
+
+    <div class="list card">
+
+      <div class="item center">
+        <h3>{{itemname}} Condition</h3>
+        <p>By {{brand}}</p>
+        <p>{{itemData.condition}} Condition</p>
+      </div>
+
+
+
+      <div class="item item-body">
+        <img class="full-image" src="img/nopic.jpg">
+
+        <p>
+          {{itemData.description}}
+        </p>
+
+      </div>
+
+      <div class="item center">
+        <h3>Offered by: {{userData.username}}</h3>
+        <p>Located in: {{userData.location}}</p>
+
+        <button class="button button-block button-balanced" ng-click="interested()">I'm Interested</button>
+        <button class="button button-block button-assertive" ng-disabled="true" ng-show="alreadyInterested">Already interested</button>
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

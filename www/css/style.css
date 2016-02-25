@@ -1,0 +1,14 @@
+/* Empty. Add your own CSS if you like */
+
+.center {
+  text-align: center;
+}
+
+[nav-view-transition][nav-view-direction] {
+  background-color: transparent;
+}
+
+.popup-buttons .button.button-positive {
+  background-color: #886AEA;
+}
+

@@ -1,0 +1,54 @@
+<ion-view title="Browse Items">
+
+  <ion-content padding>
+
+    <div class="item item-divider">
+      Actions
+    </div>
+    <div class="item">
+      <button class="button button-full button-balanced" ng-click="acceptOffer()" ng-disabled="checkedArray.length === 0">Make Offer With Selected Items</button>
+
+      <button class="button button-full button-assertive" ng-click="declineOffer()">Decline Offer</button>
+    </div>
+
+
+    <div class="item item-divider">
+      Select Items
+    </div>
+
+    <div ng-click="check($index, item._id)" class="list card" ng-repeat="item in itemData">
+
+      <div class="item row">
+        <span class="col col-75">
+          <h3>{{item.itemname}}</h3>
+          <p>By {{item.brand}}</p>
+          <p>{{item.condition}} Condition</p>
+        </span>
+        <span class="col col-center">
+          <ion-checkbox ng-model="checkedStatus[$index]" style="margin-left: 30%"></ion-checkbox>
+        </span>
+
+        </div>
+
+
+        <div class="item item-body">
+          <img class="full-image" src="img/nopic.jpg">
+
+          <p>
+            {{item.description}}
+          </p>
+
+        </div>
+
+      </div>
+
+
+
+
+
+    </div>
+
+
+  </ion-content>
+
+</ion-view>

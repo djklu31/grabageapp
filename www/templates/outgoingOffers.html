@@ -1,0 +1,39 @@
+<ion-view title="Outgoing Offers">
+  <ion-content padding>
+    <div ng-show="!itemsExist" class="center" style="margin-top: 20%">
+
+      <h2 ng-bind-html="noDataMsg"></h2>
+
+      <button class="button button-royal button-outline button-large" style="margin-top: 5%" ng-click="goAddItems()">Add Items Now</button>
+
+    </div>
+
+    <div ng-show="itemsExist">
+
+      <ion-refresher
+        pulling-text="Pull to refresh..."
+        on-refresh="doRefresh()">
+      </ion-refresher>
+
+      <div class="list">
+
+        <div class="item item-divider">
+          Liked Items
+        </div>
+
+        <span class="item item-thumbnail-left" ui-sref="app.item({id: item._id, brand: item.brand, itemname: item.itemname})" ng-repeat="item in itemArray">
+          <img src="img/nopic.jpg">
+          <h2>{{item.itemname}}</h2>
+          <p style="margin-top:5px">By {{item.brand}}</p>
+          <h3 style="margin-top:12px">Pending owner's response...</h3>
+          <button class="button button-block button-positive">Continue</button>
+          <button class="button button-block button-assertive" ng-click="deleteItem()">Delete Request</button>
+        </span>
+
+
+
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>

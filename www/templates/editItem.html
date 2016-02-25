@@ -1,0 +1,32 @@
+<ion-view title="Edit Item">
+  <ion-content padding="true">
+
+    <form name="addItemForm">
+      <label class="item item-input">
+        <span class="input-label">Item Name</span>
+        <input type="text" ng-model="item.itemName" required>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Item Brand</span>
+        <input type="text" ng-model="item.itemBrand" required>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Item Type</span>
+        <input type="text" ng-model="item.itemType" required>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Item Condition</span>
+        <input type="text" ng-model="item.itemCondition" required>
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Item Description</span>
+        <textarea type="text" rows="4" ng-model="item.itemDescription" required></textarea>
+      </label>
+      <button class="button button-royal button-block" ng-click="editItem()">Edit Item</button>
+      <button class="button button-assertive button-block" ng-click="deleteItem()">Delete Item</button>
+
+    </form>
+
+
+  </ion-content>
+</ion-view>

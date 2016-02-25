@@ -1,0 +1,32 @@
+<ion-view title="Browse Users Interested in {{itemName}}">
+  <ion-content padding>
+    <!--<div ng-show="!itemsExist" class="center" style="margin-top: 20%">-->
+
+      <!--<h2 ng-bind-html="noDataMsg"></h2>-->
+
+      <!--<button class="button button-royal button-outline button-large" style="margin-top: 5%" ng-click="goAddItems()">Add Items Now</button>-->
+
+    <!--</div>-->
+
+    <ul class="list">
+      <div class="item item-divider">
+        New Interests
+      </div>
+      <div class="item center" ng-show="noNewInterests">
+        -No New Interests-
+      </div>
+      <li class="item" ng-repeat="user in newInterests" ui-sref="app.browseuseritems({userid: user._id, itemname: itemName, requestid: user.requestId, username: userName})">
+        {{user.username}}
+      </li>
+      <div class="item item-divider">
+        Old Interests
+      </div>
+      <div class="item center" ng-show="noOldInterests">
+        -No New Interests-
+      </div>
+      <li class="item" ng-repeat="user in oldInterests" ui-sref="app.browseuseritems({userid: user._id, itemname: itemName, requestid: user.requestId, username: userName})">
+        {{user.username}}
+      </li>
+    </ul>
+  </ion-content>
+</ion-view>

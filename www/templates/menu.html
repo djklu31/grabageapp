@@ -1,0 +1,84 @@
+<ion-side-menus enable-menu-with-back-views="true">
+  <ion-side-menu-content>
+    <ion-nav-bar class="bar-royal">
+      <ion-nav-back-button>
+      </ion-nav-back-button>
+
+      <ion-nav-buttons side="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        </button>
+      </ion-nav-buttons>
+      <ion-nav-buttons side="right">
+        <button class="button button-icon button-clear ion-ios-search-strong" menu-toggle="right">
+        </button>
+      </ion-nav-buttons>
+
+    </ion-nav-bar>
+    <ion-nav-view name="menuContent"></ion-nav-view>
+  </ion-side-menu-content>
+
+  <ion-side-menu side="left">
+    <ion-header-bar class="bar-royal">
+      <h1 class="title">Welcome {{username}}!</h1>
+    </ion-header-bar>
+    <ion-content>
+      <ion-list>
+        <ion-item menu-close ui-sref="app.mydaytrader">
+          <i class="icon ion-ios-home"></i>&nbsp
+          My Day Trader
+        </ion-item>
+        <ion-item menu-close ui-sref="app.messages">
+          <i class="icon ion-email"></i>&nbsp
+          Messages ({{messageLength}})
+        </ion-item>
+        <ion-item menu-close ui-sref="app.outgoingoffers">
+          <i class="icon ion-paper-airplane"></i>&nbsp
+          Outgoing Offers
+        </ion-item>
+        <ion-item menu-close ui-sref="app.additem">
+          <i class="icon ion-ios-plus"></i>&nbsp
+          Add Item
+        </ion-item>
+        <ion-item menu-close ui-sref="app.edititemlist">
+          <i class="icon ion-edit"></i>&nbsp
+          Edit Item
+        </ion-item>
+        <ion-item menu-close ui-sref="app.editprofile">
+          <i class="icon ion-ios-body"></i>&nbsp
+          Edit Profile
+        </ion-item>
+        <ion-item menu-close ui-sref="logout">
+          <i class="icon ion-android-exit"></i>&nbsp
+          Logout
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-side-menu>
+
+  <ion-side-menu side="right">
+    <ion-header-bar class="bar-royal">
+      <h1 class="title">Search for Items</h1>
+    </ion-header-bar>
+    <ion-content>
+      <div class="list list-inset">
+        <label class="item item-input">
+          <i class="icon ion-search placeholder-icon"></i>
+          <input type="text" placeholder="Search" ng-model="item.searchText">
+        </label>
+        <button class="button button-block button-clear button-stable" ng-click="search()">Search</button>
+        <div class="list">
+
+          <a class="item" menu-close ui-sref="app.item({id: item._id, brand: item.brand, itemname: item.itemname})" ng-repeat="item in itemsData">
+            <h2>{{item.itemname}}</h2>
+            <p>By:&nbsp{{item.brand}}</p>
+            <p>Owner:&nbsp{{item.username}}</p>
+            <p>Location:&nbsp{{item.location}}</p>
+          </a>
+
+        </div>
+      </div>
+
+    </ion-content>
+  </ion-side-menu>
+
+</ion-side-menus>

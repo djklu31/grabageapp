@@ -1,0 +1,60 @@
+/**
+ * Created by kennylu on 2/18/16.
+ */
+<ion-view title="My Daytrader">
+
+  <ion-content padding>
+    <div ng-show="!itemsExist" class="center" style="margin-top: 20%">
+
+      <h2 ng-bind-html="noDataMsg"></h2>
+
+      <button class="button button-royal button-outline button-large" style="margin-top: 5%" ng-click="goAddItems()">Add Items Now</button>
+
+    </div>
+
+    <div ng-show="itemsExist">
+
+      <ion-refresher
+        pulling-text="Pull to refresh..."
+        on-refresh="doRefresh()">
+      </ion-refresher>
+
+      <div class="list">
+
+        <div class="item item-divider">
+          Notifications
+        </div>
+
+        <div class="list" ng-show="!noNotes">
+          <a class="item item-icon-left" ui-sref="app.additem" ng-repeat="note in notifications" ng-click="removeNotification(note._id)">
+            <i ng-class="note.icon"></i>
+            <h3>{{note.type}}</h3>
+            <p>{{note.message}}</p>
+          </a>
+        </div>
+
+        <div class="item center" ng-show="noNotes">
+          No Notifications
+        </div>
+
+        <div class="item item-divider">
+          My Items
+        </div>
+
+        <span class="item" ng-repeat="item in userData">
+          <a class="item item-thumbnail-left" ui-sref="app.item({id: item._id, brand: item.brand, itemname: item.itemname})">
+            <img src="img/nopic.jpg">
+            <h2>{{item.itemname}}</h2>
+            <p style="margin-top:5px">By {{item.brand}}</p>
+            <h3 style="margin-top:12px">{{item.incomingtraderequests.length}} people have expressed interest</h3>
+          </a>
+
+          <button style="margin-top:25px" ui-sref="app.browseusers({id: item._id})" class="button button-full button-balanced">Make a Deal</button>
+
+        </span>
+
+      </div>
+    </div>
+
+  </ion-content>
+</ion-view>
