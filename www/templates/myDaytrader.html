@@ -8,7 +8,7 @@
 
       <h2 ng-bind-html="noDataMsg"></h2>
 
-      <button class="button button-royal button-outline button-large" style="margin-top: 5%" ng-click="goAddItems()">Add Items Now</button>
+      <button class="button button-royal button-outline button-large" style="margin-top: 5%" ng-click="goAddItems()">Add Items Now&nbsp&nbsp<i class="ion-plus"></i></button>
 
     </div>
 
@@ -25,11 +25,11 @@
           Notifications
         </div>
 
-        <div class="list" ng-show="!noNotes">
-          <a class="item item-icon-left" ui-sref="app.additem" ng-repeat="note in notifications" ng-click="removeNotification(note._id)">
+        <div ng-show="!noNotes">
+          <a class="item item-icon-left item-text-wrap" ui-sref="{{note.url}}" ng-repeat="note in notifications | orderBy:'+':true" ng-click="removeNotification(note._id)">
             <i ng-class="note.icon"></i>
             <h3>{{note.type}}</h3>
-            <p>{{note.message}}</p>
+            <p ng-bind-html="note.message"></p>
           </a>
         </div>
 
@@ -41,17 +41,17 @@
           My Items
         </div>
 
-        <span class="item" ng-repeat="item in userData">
-          <a class="item item-thumbnail-left" ui-sref="app.item({id: item._id, brand: item.brand, itemname: item.itemname})">
+        <ion-list class="item" ng-repeat="item in userData | orderBy: '-incomingtraderequests.length'">
+          <ion-item class="item item-thumbnail-left item-text-wrap" ui-sref="app.item({id: item._id, brand: item.brand, itemname: item.itemname})">
             <img src="img/nopic.jpg">
             <h2>{{item.itemname}}</h2>
             <p style="margin-top:5px">By {{item.brand}}</p>
-            <h3 style="margin-top:12px">{{item.incomingtraderequests.length}} people have expressed interest</h3>
-          </a>
+            <h3 style="margin-top:12px" ng-class="{red: (item.incomingtraderequests.length === 0), green: (item.incomingtraderequests.length > 0)}">{{item.incomingtraderequests.length}} people have expressed interest</h3>
+          </ion-item>
 
-          <button style="margin-top:25px" ui-sref="app.browseusers({id: item._id})" class="button button-full button-balanced">Make a Deal</button>
+          <button style="margin-top:25px" ui-sref="app.browseusers({id: item._id, itemname: item.itemname})" class="button button-full button-balanced" ng-disabled="item.incomingtraderequests.length === 0">Make a Deal</button>
 
-        </span>
+        </ion-list>
 
       </div>
     </div>

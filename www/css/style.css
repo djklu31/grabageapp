@@ -12,3 +12,15 @@
   background-color: #886AEA;
 }
 
+
+.strikethrough {
+  text-decoration: line-through;
+}
+
+.red {
+  color: darkred;
+}
+
+.green {
+  color: darkgreen;
+}

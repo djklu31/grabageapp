@@ -1,0 +1,46 @@
+<ion-view title="Items Proposed">
+  <ion-content padding>
+
+    <div class="item item-divider">
+      Actions
+    </div>
+    <div class="item">
+      <button class="button button-full button-balanced" ng-click="acceptOffer()" ng-disabled="checkedArray.length === 0">Accept Offer</button>
+
+      <button class="button button-full button-assertive" ng-click="declineOffer()">Decline Offer</button>
+    </div>
+    <div class="item item-divider">
+      Items Proposed
+    </div>
+    <div class="list card" ng-repeat="item in offeredItems">
+
+      <div class="item">
+        <span class="center">
+          <h3>{{item.itemname}}</h3>
+          <p>By {{item.brand}}</p>
+          <p>{{item.condition}} Condition</p>
+        </span>
+
+
+      </div>
+
+
+      <div class="item item-body">
+        <img class="full-image" src="img/nopic.jpg">
+
+        <p>
+          {{item.description}}
+        </p>
+
+      </div>
+
+    </div>
+
+
+
+
+
+    </div>
+
+  </ion-content>
+</ion-view>

@@ -25,12 +25,12 @@ angular.module('starter', ['ionic', 'ngCordova', 'ui.mask'])
     }
 
     SessionService.setUserAuthenticated('djklu31');
-    SessionService.setUserId('56cec69cc17f6a431e961ddf');
+    SessionService.setUserId('56d6b70c2e2ce1731491269d');
 
   });
 
     SessionService.setUserAuthenticated('djklu31');
-    SessionService.setUserId('56cec69cc17f6a431e961ddf');
+    SessionService.setUserId('56d6b70c2e2ce1731491269d');
 
 
 })
@@ -85,7 +85,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'ui.mask'])
         }
       })
       .state('app.browseusers', {
-        url: '/browseusers/:id',
+        url: '/browseusers/:id?:itemname',
         views: {
           'menuContent':{
             templateUrl: 'templates/browseusers.html',
@@ -94,11 +94,29 @@ angular.module('starter', ['ionic', 'ngCordova', 'ui.mask'])
         }
       })
       .state('app.browseuseritems', {
-        url: '/browseuseritems/:userid?:itemname?:requestid?:username',
+        url: '/browseuseritems/:userid?:itemname?:requestid?:itemid?:interestid?:beenseen',
         views: {
           'menuContent':{
             templateUrl: 'templates/browseUserItems.html',
             controller: 'BrowseUserItemsCtrl'
+          }
+        }
+      })
+      .state('app.seeoffer', {
+        url: '/seeoffer/:requestid?:itemname?:itemid?:offereduserid?:offerid?:beenseen',
+        views: {
+          'menuContent':{
+            templateUrl: 'templates/seeOffer.html',
+            controller: 'SeeOfferCtrl'
+          }
+        }
+      })
+      .state('app.seeofferlist', {
+        url: '/seeofferlist',
+        views: {
+          'menuContent':{
+            templateUrl: 'templates/seeOfferList.html',
+            controller: 'SeeOfferListCtrl'
           }
         }
       })
@@ -186,7 +204,7 @@ angular.module('starter', ['ionic', 'ngCordova', 'ui.mask'])
         url: '/logout',
         controller: 'LogoutCtrl',
         cache: false,
-        resolve: { authenticate: authenticate }
+        //resolve: { authenticate: authenticate }
       })
 
 

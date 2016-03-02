@@ -1,0 +1,40 @@
+<ion-view title="See Offer">
+  <ion-content padding>
+
+    <ion-list class="list" show-delete="shouldShowDelete" can-swipe="true">
+      <div class="item item-divider">
+        New Offers
+      </div>
+
+      <ion-item class="item item-text-wrap" ng-repeat="offer in newOffers" ui-sref="app.seeoffer({requestid: offer.requestid, offereduserid: offer.offereduserid, itemid: offer.itemid, itemname: offer.itemname, offerid: offer._id, beenseen: offer.beenseen})">
+        <h3>{{offer.itemname}}</h3>
+        <p>{{offer.ownername}} has offered this item for {{offer.proposedlength}} of your items.</p>
+        <ion-option-button class="button-assertive" ng-click="delete(offer._id)">
+          Delete
+        </ion-option-button>
+
+        <p ng-show="offer.offerstatus === 'Pending'" style="color: darkgoldenrod">Pending</p>
+        <p ng-show="offer.offerstatus === 'Offer Declined'" style="color: darkred">Offer Declined</p>
+        <p ng-show="offer.offerstatus === 'Offer Accepted'" style="color: darkgreen">Offer Accepted</p>
+      </ion-item>
+
+      <div class="item item-divider">
+        Old Offers
+      </div>
+      <ion-item class="item item-text-wrap" ng-repeat="offer in oldOffers" ui-sref="app.seeoffer({requestid: offer.requestid, offereduserid: offer.offereduserid, itemid: offer.itemid, itemname: offer.itemname, offerid: offer._id, beenseen: offer.beenseen})">
+        <h3 ng-class="{strikethrough: (offer.offerstatus === 'Offer Accepted' || offer.offerstatus === 'Offer Declined')}">{{offer.itemname}}</h3>
+
+        <p>{{offer.ownername}} has offered this item for {{offer.proposedlength}} of your items.</p>
+        <ion-option-button class="button-assertive" ng-click="delete(offer._id)">
+          Delete
+        </ion-option-button>
+
+        <p ng-show="offer.offerstatus === 'Pending'" style="color: darkgoldenrod">Pending</p>
+        <p ng-show="offer.offerstatus === 'Offer Declined'" style="color: darkred">Offer Declined</p>
+        <p ng-show="offer.offerstatus === 'Offer Accepted'" style="color: darkgreen">Offer Accepted</p>
+      </ion-item>
+
+    </ion-list>
+
+  </ion-content>
+</ion-view>

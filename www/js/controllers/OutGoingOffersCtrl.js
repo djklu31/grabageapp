@@ -35,6 +35,8 @@ angular.module('starter')
 
           if(response.data.likeditems != 0) {
             $scope.itemsExist = true;
+          } else {
+            $scope.noDataMsg = "-No outgoing offers.  Search for some items.-"
           }
 
           angular.forEach(response.data.likeditems, function(itemId, key) {

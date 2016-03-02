@@ -3,7 +3,7 @@
  */
 angular.module('starter')
 
-.controller('BrowseUsersCtrl', function($scope, $http, SessionService, serverLocation, $stateParams, $q) {
+.controller('BrowseUsersCtrl', function($scope, $http, SessionService, serverLocation, $stateParams, $q, $ionicLoading, $state, $ionicPopup) {
     $scope.itemId = $stateParams.id;
     var promises = [];
     $scope.usersArray = [];
@@ -12,62 +12,124 @@ angular.module('starter')
     $scope.newInterests = [];
     $scope.noNewInterests = false;
     $scope.noOldInterests = false;
+    var userId = SessionService.getUserId();
+    $scope.itemName = $stateParams.itemname;
 
-    $http.get(serverLocation + '/items/' + $scope.itemId)
+    console.log($stateParams)
+
+    $scope.show = function() {
+      $ionicLoading.show({
+        template: 'Loading...'
+      });
+
+    };
+
+    var authorizeError = function() {
+      $ionicPopup.alert({
+        title: 'This is not your item.'
+      })
+    };
+
+    $scope.hide = function(){
+      $ionicLoading.hide();
+    };
+
+    //$http.get(serverLocation + '/items/' + $scope.itemId)
+    //  .then(function(response) {
+    //
+    //    //authorize user
+    //    if(response.data[0].ownerId !== SessionService.getUserId()) {
+    //
+    //      authorizeError();
+    //
+    //      $state.go('app.mydaytrader');
+    //    }
+    //
+    //    $scope.show();
+    //    //console.log(response.data[0].incomingtraderequests);
+    //    //console.log(response)
+    //    promises = [];
+    //    $scope.usersArray = [];
+    //    requests = [];
+    //    $scope.oldInterests = [];
+    //    $scope.newInterests = [];
+    //
+    //    $scope.itemName = response.data[0].itemname;
+    //
+    //    //console.log($scope.itemName)
+    //    //console.log(response.data[0].incomingtraderequests);
+    //
+    //    angular.forEach(response.data[0].incomingtraderequests, function(tradeRequest) {
+    //      //console.log(tradeRequest._id)
+    //      requests.push(tradeRequest);
+    //
+    //
+    //      var promise = $http.get(serverLocation + '/users/id/' + tradeRequest.otheruser)
+    //
+    //      promises.push(promise);
+    //    });
+    //
+    //
+    //    $q.all(promises)
+    //      .then(function(response) {
+    //
+    //        $scope.hide();
+    //
+    //        //console.log(response);
+    //
+    //        angular.forEach(response, function(user, key) {
+    //          user.data.requestId = requests[key]._id;
+    //          user.data.beenseen = requests[key].beenseen;
+    //          user.data.status = requests[key].status;
+    //          //console.log(user.data.requestId)
+    //          //console.log(user.data.beenseen)
+    //
+    //
+    //
+    //          if(user.data.beenseen === true) {
+    //            $scope.oldInterests.push(user.data);
+    //          } else {
+    //            $scope.newInterests.push(user.data);
+    //            //console.log($scope.newInterests)
+    //          }
+    //        })
+    //
+    //        console.log("OLD RESPONSE:" + JSON.stringify($scope.oldInterests));
+    //
+    //
+    //        if($scope.oldInterests.length === 0){
+    //          $scope.noOldInterests = true;
+    //        }
+    //        if($scope.newInterests.length === 0) {
+    //          $scope.noNewInterests = true;
+    //
+    //        }
+    //      })
+    //
+    //
+    //  })
+
+    $http.get(serverLocation + '/users/interests/' + userId)
       .then(function(response) {
-        //console.log(response.data[0].incomingtraderequests);
-        //console.log(response)
-        promises = [];
-        $scope.usersArray = [];
-        requests = [];
-        $scope.oldInterests = [];
-        $scope.newInterests = [];
+        //console.log(response.data[0].interests);
 
-        $scope.itemName = response.data[0].itemname;
+        angular.forEach(response.data[0].interests, function(interest, key) {
+          //console.log(interest);
 
-        console.log($scope.itemName)
-        //console.log(response.data[0].incomingtraderequests);
-
-        angular.forEach(response.data[0].incomingtraderequests, function(tradeRequest) {
-          //console.log(tradeRequest._id)
-          requests.push(tradeRequest);
-
-          var promise = $http.get(serverLocation + '/users/id/' + tradeRequest.otheruser)
-
-          promises.push(promise);
+          if(interest.beenseen == false && interest.itemid === $scope.itemId) {
+            $scope.newInterests.push(interest);
+          } else if (interest.beenseen == true && interest.itemid === $scope.itemId) {
+            $scope.oldInterests.push(interest);
+          }
         })
 
-
-        $q.all(promises)
-          .then(function(response) {
-            console.log(response);
-
-            angular.forEach(response, function(user, key) {
-              user.data.requestId = requests[key]._id;
-              user.data.beenseen = requests[key].beenseen;
-              //console.log(user.data.requestId)
-              //console.log(user.data.beenseen)
-
-
-
-              if(user.data.beenseen === true) {
-                $scope.oldInterests.push(user.data);
-              } else {
-                $scope.newInterests.push(user.data);
-                //console.log($scope.newInterests)
-              }
-            })
-
-
-            if($scope.oldInterests.length === 0){
-              $scope.noOldInterests = true;
-            }
-            if($scope.newInterests.length === 0) {
-              $scope.noNewInterests = true;
-
-            }
-          })
+        console.log("NEW INTERESTS :" + JSON.stringify($scope.newInterests))
+        console.log("OLD INTERESTS :" + $scope.oldInterests)
 
 
       })
-  })
+
+
+
+
+  });

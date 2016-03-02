@@ -3,7 +3,7 @@
  */
 angular.module('starter')
 
-.controller('BrowseUserItemsCtrl', function($scope, $http, $stateParams, serverLocation, $ionicPopup, $state, SessionService) {
+.controller('BrowseUserItemsCtrl', function($scope, $http, $stateParams, serverLocation, $ionicPopup, $state, SessionService, $state) {
 
     console.log($stateParams);
 
@@ -11,6 +11,12 @@ angular.module('starter')
     var requestId = $stateParams.requestid;
     var itemName = $stateParams.itemname;
     var userName = SessionService.getUserAuthenticated();
+    var itemId = $stateParams.itemid;
+    var userId = SessionService.getUserId();
+    var interestId = $stateParams.interestid;
+    var beenSeen = $stateParams.beenseen;
+
+    console.log("ID: " + itemId)
 
     $scope.checkedStatus = [];
     $scope.checkedArray = [];
@@ -18,6 +24,8 @@ angular.module('starter')
     var acceptSuccess = function() {
       $ionicPopup.alert({
         title: 'Offer Sent.'
+      }).then(function(res) {
+        $state.go("app.mydaytrader");
       })
     };
 
@@ -29,7 +37,7 @@ angular.module('starter')
 
     var declineSuccess = function() {
       $ionicPopup.alert({
-        title: 'Offer Declined'
+        title: 'Interest was Declined'
       })
     };
 
@@ -54,20 +62,29 @@ angular.module('starter')
     }
 
     $scope.declineOffer = function() {
-      $http.put(serverLocation + '/items/interest/requeststatus/' + requestId, {status: "Declined"})
+      $http.put(serverLocation + '/items/interest/requeststatus/' + requestId, {status: 'Interest Declined'})
         .then(function(response) {
 
           var data = {
-            type: 'Declined',
+            type: 'Interest Declined',
             requestid: requestId,
             itemname: itemName,
-            username: userName
+            username: userName,
+            interestid: interestId,
+            itemid: itemId,
+            userid: userId
           }
 
           $http.put(serverLocation + '/users/notifications/' + ownerId, data)
             .then(function(response) {
 
-            })
+            });
+
+          //update status to say 'declined' for the user's interest array
+          $http.put(serverLocation + '/users/interest/updatestatus/' + interestId, {status: 'Interest Declined'})
+            .then(function(response) {
+
+            });
 
           declineSuccess();
           $state.go("app.mydaytrader");
@@ -76,10 +93,10 @@ angular.module('starter')
         })
     }
 
-    $scope.acceptOffer = function() {
+    $scope.makeOffer = function() {
 
       var data = {
-        items: $scope.checkedArray
+        items: $scope.checkedArray,
       }
 
       console.log("Selected items:" + $scope.checkedArray);
@@ -87,23 +104,65 @@ angular.module('starter')
       $http.put(serverLocation + '/items/interest/accept/' + requestId, data)
         .then(function(response) {
 
-          $http.put(serverLocation + '/items/interest/requeststatus/' + requestId, {status: "Accepted"})
+
+          $http.put(serverLocation + '/items/interest/requeststatus/' + requestId, {status: "Offer Made"})
             .then(function(response) {
 
-              var data = {
-                type: 'Accepted',
-                requestid: requestId,
-                itemname: itemName,
-                username: userName
-              }
-
-              $http.put(serverLocation + '/users/notifications/' + ownerId, data)
+              //update status to say 'offer made' for the user's interest array
+              $http.put(serverLocation + '/users/interest/updatestatus/' + interestId, {status: 'Offer Made'})
                 .then(function(response) {
 
-                  acceptSuccess();
-                  $state.go("app.mydaytrader");
+                });
 
+              var data = {
+                ownername: userName,
+                itemid: itemId,
+                ownerid: ownerId,
+                itemname: itemName,
+                requestid: requestId,
+                proposedlength: $scope.checkedArray.length,
+                offereduserid: userId,
+                offerstatus: 'Pending'
+              };
+
+              $http.put(serverLocation + '/users/offers/' + ownerId, data)
+                .then(function(response) {
+
+
+                  $http.get(serverLocation + '/users/offers/' + ownerId)
+                    .then(function(response) {
+
+                      console.log(response.data);
+                      var lastOfferId = response.data[0].offers[response.data[0].offers.length-1]._id;
+
+                      console.log('last id:' + lastOfferId);
+
+                      var data = {
+                        type: 'Offer Made',
+                        requestid: requestId,
+                        itemid: itemId,
+                        itemname: itemName,
+                        username: userName,
+                        userid: userId,
+                        offerid: lastOfferId
+                      };
+
+                      $http.put(serverLocation + '/users/notifications/' + ownerId, data)
+                        .then(function(response) {
+                          $http.get(serverLocation + '/users/offers/' + ownerId)
+                            .then(function(response) {
+
+                              acceptSuccess();
+                              //$state.go("app.mydaytrader");
+
+
+                            })
+
+                        });
+
+                    })
                 })
+
 
 
             }, function(err) {
@@ -115,6 +174,8 @@ angular.module('starter')
           acceptProblem();
         })
 
+
+
     }
 
 
@@ -124,13 +185,18 @@ angular.module('starter')
         console.log($scope.itemData);
       });
 
-    $http.put(serverLocation + '/items/interest/statusupdate/' + requestId)
-      .then(function(response) {
-        console.log("Status Updated");
-      }, function(err) {
-        console.log("Problem updated status");
-      })
 
 
+
+    if(beenSeen === 'false') {
+
+      $http.put(serverLocation + '/users/interest/interestseen/' + interestId)
+        .then(function(response) {
+          console.log("Status Updated");
+        }, function(err) {
+          console.log("Problem updated status");
+        })
+
+    }
 
   });
