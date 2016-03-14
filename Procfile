@@ -1,1 +1,1 @@
-web: node ./api/server
+web: node ./api/server.js
