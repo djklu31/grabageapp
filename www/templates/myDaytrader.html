@@ -1,7 +1,7 @@
 /**
  * Created by kennylu on 2/18/16.
  */
-<ion-view title="My Daytrader">
+<ion-view title="My Tradar">
 
   <ion-content padding>
     <div ng-show="!itemsExist" class="center" style="margin-top: 20%">
@@ -25,31 +25,53 @@
           Notifications
         </div>
 
-        <div ng-show="!noNotes">
-          <a class="item item-icon-left item-text-wrap" ui-sref="{{note.url}}" ng-repeat="note in notifications | orderBy:'+':true" ng-click="removeNotification(note._id)">
-            <i ng-class="note.icon"></i>
-            <h3>{{note.type}}</h3>
-            <p ng-bind-html="note.message"></p>
-          </a>
+        <div ng-show="!((notifications && notifications.length === 0) || !notifications)">
+          <ion-list class="list" can-swipe="true">
+            <ion-item class="item item-text-wrap item-remove-animate" ui-sref="{{note.url}}" ng-repeat="note in notifications | orderBy:'+':true" ng-click="removeNotification(note._id, $index)">
+              <div class="item-icon-left">
+                <i ng-class="note.icon"></i>
+                <h3>{{note.type}}</h3>
+                <p ng-bind-html="note.message"></p>
+              </div>
+
+              <div class="item-icon-right">
+                <i class="icon ion-chevron-left icon-accessory"></i>
+              </div>
+
+
+              <ion-option-button class="button-positive" ng-click="removeNotification(note._id, $index)">
+                Dismiss
+              </ion-option-button>
+
+            </ion-item>
+          </ion-list>
         </div>
 
-        <div class="item center" ng-show="noNotes">
-          No Notifications
+        <div class="item center" ng-show="(notifications && notifications.length === 0) || !notifications">
+          -No Notifications-
         </div>
 
         <div class="item item-divider">
           My Items
         </div>
 
-        <ion-list class="item" ng-repeat="item in userData | orderBy: '-incomingtraderequests.length'">
+        <ion-list can-swipe="true" class="item" ng-repeat="item in userData | orderBy: '-incomingtraderequests.length'">
           <ion-item class="item item-thumbnail-left item-text-wrap" ui-sref="app.item({id: item._id, brand: item.brand, itemname: item.itemname})">
             <img src="img/nopic.jpg">
             <h2>{{item.itemname}}</h2>
             <p style="margin-top:5px">By {{item.brand}}</p>
-            <h3 style="margin-top:12px" ng-class="{red: (item.incomingtraderequests.length === 0), green: (item.incomingtraderequests.length > 0)}">{{item.incomingtraderequests.length}} people have expressed interest</h3>
+            <h3 style="margin-top:12px" ng-class="{red: (item.interestLength === 0), green: (item.interestLength > 0)}">{{item.interestLength}} people have expressed interest</h3>
+
+            <div class="item-icon-right">
+                <i class="icon ion-chevron-left icon-accessory"></i>
+            </div>
+
+            <ion-option-button class="button-energized" ui-sref="app.edititem({id: item._id})">
+              &nbsp&nbspEdit&nbsp&nbsp
+            </ion-option-button>
           </ion-item>
 
-          <button style="margin-top:25px" ui-sref="app.browseusers({id: item._id, itemname: item.itemname})" class="button button-full button-balanced" ng-disabled="item.incomingtraderequests.length === 0">Make a Deal</button>
+          <button style="margin-top:25px" ui-sref="app.browseusers({id: item._id, itemname: item.itemname})" class="button button-full button-balanced" ng-disabled="item.interestLength === 0">Make a Deal</button>
 
         </ion-list>
 

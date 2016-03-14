@@ -3,10 +3,9 @@
  */
 angular.module('starter')
 
-.controller('SeeOfferListCtrl', function($scope, $http, serverLocation, SessionService) {
+.controller('SeeOfferListCtrl', function($scope, $http, serverLocation, SessionService, $ionicListDelegate) {
 
     var userId = SessionService.getUserId();
-    $scope.shouldShowDelete = false;
     $scope.newOffers = [];
     $scope.oldOffers = [];
 
@@ -33,12 +32,32 @@ angular.module('starter')
           }
         })
 
-        console.log('NEW OFFERS: ' + JSON.stringify($scope.newOffers));
-        console.log('OLD OFFERS: ' + JSON.stringify($scope.oldOffers));
+        //console.log('NEW OFFERS: ' + JSON.stringify($scope.newOffers));
+        //console.log('OLD OFFERS: ' + JSON.stringify($scope.oldOffers));
       })
 
-    $scope.deleteOffer = function(id) {
-      console.log(id);
+    $scope.deleteOffer = function(id, age, index) {
+
+      console.log('OLD OFFERS BEFORE: ' + JSON.stringify($scope.oldOffers));
+
+      $http.put(serverLocation + '/users/offers/remove/' + id)
+        .then(function(response) {
+
+          if(age === 'new') {
+            $scope.newOffers.splice(index, 1);
+          } else if(age === 'old') {
+
+            $scope.oldOffers.splice(index, 1);
+
+            //console.log('INDEX: ' + i)
+            //
+            //console.log('OLD OFFERS AFTER: ' + JSON.stringify($scope.oldOffers));
+          }
+
+          $ionicListDelegate.closeOptionButtons();
+
+        });
+
     }
 
   })

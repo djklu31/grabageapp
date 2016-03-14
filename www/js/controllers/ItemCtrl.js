@@ -3,16 +3,28 @@
  */
 angular.module('starter')
 
-.controller('ItemCtrl', function($scope, $http, $stateParams, serverLocation, SessionService, $ionicPopup, $state) {
+.controller('ItemCtrl', function($scope, $http, $stateParams, serverLocation, SessionService, $ionicPopup, $state, $ionicModal) {
 
     var userId = SessionService.getUserId();
     var userName = SessionService.getUserAuthenticated();
+    $scope.message = {};
 
     $scope.itemname = $stateParams.itemname;
     $scope.brand = $stateParams.brand;
     $scope.itemId = $stateParams.id;
     $scope.alreadyInterested = false;
     $scope.myItem = false;
+    $scope.interestLength = 0;
+
+    var messageSuccess = function() {
+      $ionicPopup.alert({
+        title: 'Your message has been sent'
+      }).then(function(res) {
+        $scope.closeModal();
+        $scope.message.message = '';
+      })
+    };
+
 
     var interestSuccess = function() {
       $ionicPopup.alert({
@@ -28,6 +40,16 @@ angular.module('starter')
       })
     };
 
+    $http.get(serverLocation + '/users/interests/' + userId)
+      .then(function(response) {
+
+        angular.forEach(response.data[0].interests, function(interest, key) {
+          if(interest.itemid === $scope.itemId) {
+            $scope.interestLength++;
+          }
+        })
+      });
+
 
     $http.get(serverLocation + '/items/' + $stateParams.id)
       .then(function(response) {
@@ -37,8 +59,6 @@ angular.module('starter')
         $scope.itemData = response.data[0];
 
         console.log($scope.itemData)
-
-        $scope.interestLength = $scope.itemData.incomingtraderequests.length;
 
         if($scope.itemData.ownerId === userId) {
           $scope.myItem = true;
@@ -57,6 +77,8 @@ angular.module('starter')
         $http.get(serverLocation + '/users/id/' + response.data[0].ownerId)
           .then(function(response) {
             $scope.userData = response.data;
+
+            $scope.ownerName = $scope.userData.username
           })
       });
 
@@ -131,6 +153,158 @@ angular.module('starter')
             timeoutNotice();
           }
         })
+    }
+
+    //*******************************************************************************************************************
+    //modal section for messages
+    $ionicModal.fromTemplateUrl('templates/sendMessage.html', {
+      scope: $scope,
+      animation: 'slide-in-up'
+    }).then(function(modal) {
+      $scope.modal = modal;
+    });
+
+    $scope.openModal = function() {
+      $scope.modal.show();
+    };
+    $scope.closeModal = function() {
+      $scope.modal.hide();
+    };
+    //Cleanup the modal when we're done with it!
+    $scope.$on('$destroy', function() {
+      $scope.modal.remove();
+    });
+    // Execute action on hide modal
+    $scope.$on('modal.hidden', function() {
+      // Execute action
+    });
+    // Execute action on remove modal
+    $scope.$on('modal.removed', function() {
+      // Execute action
+    });
+
+
+    $scope.openMessageBox = function() {
+
+      $scope.subject = "Question regarding item: " + $scope.itemname + " by " + $scope.brand + ".";
+
+      $scope.openModal();
+    }
+
+    $scope.sendMessage = function() {
+
+      var datetime = new Date();
+
+      $http.get(serverLocation + '/messages/' + $scope.itemData.ownerId)
+        .then(function(response) {
+
+          var messages = response.data[0].messages;
+          var chatLogExistsMessageId;
+
+          if(messages.length === 0) {
+
+            var data = {
+              message: $scope.message.message,
+              subject: $scope.subject,
+              datetime: datetime,
+              ownersmessage: false,
+              username: userName,
+              otheruserid: userId,
+              otherusername: userName,
+              userid: $scope.itemData.ownerId
+            };
+
+            $http.put(serverLocation + '/messages/chatlog/new', data)
+              .then(function(response) {
+
+                $http.put(serverLocation + '/users/notifications/' + $scope.itemData.ownerId, data)
+                  .then(function(response) {
+                        messageSuccess();
+                  })
+
+              })
+
+          } else {
+            for (var i = 0; i < messages.length; i++) {
+              if(messages[i].otheruserid === userId && messages[i].subject === $scope.subject) {
+                chatLogExistsMessageId = messages[i]._id;
+                break;
+              }
+            }
+
+            if(chatLogExistsMessageId) {
+              console.log(chatLogExistsMessageId);
+
+              var data = {
+                datetime: datetime,
+                message: $scope.message.message,
+                ownersmessage: false
+              }
+
+              $http.put(serverLocation + '/messages/chatlog/addto/' + chatLogExistsMessageId, data)
+                .then(function(response) {
+
+                  var data = {
+                    type: "New Message",
+                    username: userName,
+                    messageid: chatLogExistsMessageId,
+                    itemname: $scope.itemname
+                  }
+
+                  $http.put(serverLocation + '/users/notifications/' + $scope.itemData.ownerId, data)
+                    .then(function(response) {
+                      $http.put(serverLocation + '/messages/status/notseen/' + chatLogExistsMessageId)
+                        .then(function(response) {
+                          messageSuccess();
+                        })
+                    })
+
+                })
+
+
+
+            } else {
+
+              var data = {
+                message: $scope.message.message,
+                subject: $scope.subject,
+                datetime: datetime,
+                ownersmessage: false,
+                username: userName,
+                otheruserid: userId,
+                otherusername: userName,
+                userid: $scope.itemData.ownerId
+              }
+
+              $http.put(serverLocation + '/messages/chatlog/new', data)
+                .then(function(response) {
+
+                  var data = {
+                    type: "New Message",
+                    username: userName,
+                    messageid: chatLogExistsMessageId,
+                    itemname: $scope.itemname
+                  }
+
+                  $http.put(serverLocation + '/users/notifications/' + $scope.itemData.ownerId, data)
+                    .then(function(response) {
+
+                      $http.put(serverLocation + '/messages/status/notseen/' + chatLogExistsMessageId)
+                        .then(function(response) {
+                          messageSuccess();
+                        })
+
+                    })
+
+
+                })
+            }
+          }
+        })
+    }
+
+    $scope.cancelMessage = function() {
+      $scope.closeModal();
     }
 
   });

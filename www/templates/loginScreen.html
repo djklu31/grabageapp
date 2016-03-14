@@ -1,23 +1,25 @@
-<ion-view title="Welcome to Daytrader">
+<ion-view title="Welcome to Day Tradar">
 
-  <ion-content padding="true" style="background: #886AEA" class="slide-left-right">
+  <ion-content padding="true" style="background-image: url('img/space.jpg')" class="slide-left-right">
 
-    <img ng-src="img/daytraderlogo.png" style="width: 100%; margin-top: 35%">
+    <div class="center">
+      <img ng-src="img/logo4.png" style="width: 90%; margin-top: 150px; max-width: 400px">
+    </div>
 
-    <form name="loginForm" style="margin-top: 15%" ng-submit="checkUser()">
-      <div class="card">
-        <label class="item item-input">
-          <span class="input-label">Username</span>
-          <input type="text" ng-model="user.username"required>
-        </label>
-        <label class="item item-input">
-          <span class="input-label">Password</span>
-          <input type="password" ng-model="user.password" required>
-        </label>
-      </div>
+      <form name="loginForm" style="margin-top: 50px; max-width: 550px; margin-left: auto; margin-right: auto" ng-submit="checkUser()">
+        <div class="card">
+          <label class="item item-input">
+            <span class="input-label">Username</span>
+            <input type="text" autocapitalize="none" ng-model="user.username"required>
+          </label>
+          <label class="item item-input">
+            <span class="input-label">Password</span>
+            <input type="password" ng-model="user.password" required>
+          </label>
+        </div>
 
-      <button class="button-block button button-dark" type="submit">Login</button>
-    </form>
+        <button class="button-block button button-dark" type="submit">Login</button>
+      </form>
 
     <div class="center"><a ui-sref="createusermenu.adduser" style="color: white">Create a new account</a></div>
 

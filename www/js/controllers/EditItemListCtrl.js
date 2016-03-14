@@ -9,7 +9,7 @@ angular.module('starter')
     $scope.itemsExist = false;
     var userId = SessionService.getUserId();
 
-    $http.get(serverLocation + '/items/user/' + userId)
+    $http.get(serverLocation + '/users/items/' + userId)
       .then(function(response){
         $scope.items = response.data;
 

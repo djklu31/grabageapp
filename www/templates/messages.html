@@ -1,9 +1,52 @@
 <ion-view view-title="Messages">
-  <ion-content padding="true">
 
+  <ion-content>
 
-    <h1>MESSAGES</h1>
+    <ion-list>
+
+      <div class="item item-divider">
+        New Messages
+      </div>
+
+      <div class="item center" ng-show="!newMessages || newMessages.length === 0">
+        -No New Messages-
+      </div>
+
+      <ion-item can-swipe="true" class="item item-avatar item-icon-right item-remove-animate" href="#" ng-repeat="message in newMessages" ui-sref="app.chatlog({id: message._id, otheruser: message.otherusername})">
+
+        <img src="img/no-user-image.gif">
+        <i class="icon ion-chevron-left icon-accessory"></i>
+        <h2>{{message.otherusername}}</h2>
+        <p>{{message.latestmessage}}</p>
+
+        <ion-option-button class="button-assertive" ng-click="deleteMessage(message._id, $index)">
+          &nbspDelete&nbsp
+        </ion-option-button>
+      </ion-item>
+
+      <div class="item item-divider">
+        Old Messages
+      </div>
+
+      <div class="item center" ng-show="!oldMessages || oldMessages.length === 0">
+        -No Old Messages-
+      </div>
+
+      <ion-item can-swipe="true" class="item item-avatar item-icon-right item-remove-animate" href="#" ng-repeat="message in oldMessages" ui-sref="app.chatlog({id: message._id, otheruser: message.otherusername})">
+
+        <img src="img/no-user-image.gif">
+        <i class="icon ion-chevron-left icon-accessory"></i>
+        <h2>{{message.otherusername}}</h2>
+        <p>{{message.latestmessage}}</p>
+
+        <ion-option-button class="button-assertive" ng-click="deleteMessage(message._id, $index)">
+          &nbspDelete&nbsp
+        </ion-option-button>
+      </ion-item>
+
+    </ion-list>
 
   </ion-content>
+
 
 </ion-view>

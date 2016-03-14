@@ -24,3 +24,30 @@
 .green {
   color: darkgreen;
 }
+
+.brightgreen {
+  color: green;
+}
+
+.ownersmessageheader {
+  background-color: #03BBEF;
+  color: white!important;
+}
+
+.ownersmessagebody {
+  background-color: #11c1f3;
+  color: white;
+}
+
+.ownersmessagedatetime {
+  color: white!important;
+}
+
+.ownersmessageposition {
+  width: 275px;
+  float: right;
+}
+
+.notownersmessageposition {
+  width: 275px;
+}

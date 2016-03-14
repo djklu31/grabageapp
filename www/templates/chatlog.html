@@ -1,0 +1,24 @@
+<ion-view title="Chat">
+  <ion-content>
+
+    <div class="card" ng-repeat="chat in chatlog" ng-class="{ownersmessageposition: chat.ownersmessage === true, notownersmessageposition: chat.ownersmessage !== true}">
+      <div ng-class="{ownersmessageheader: chat.ownersmessage === true}" class="item item-divider">
+        <span>{{otherUser}} <p ng-class="{ownersmessagedatetime: chat.ownersmessage === true}" style="float: right">{{chat.datetime | date:'MM/dd/yyyy @ h:mma'}}</p></span>
+      </div>
+      <div ng-class="{ownersmessagebody: chat.ownersmessage === true}" class="item item-text-wrap">
+        {{chat.message}}
+      </div>
+    </div>
+
+  </ion-content>
+
+  <ion-footer-bar align-title="left" class="bar-stable">
+    <label class="item item-input" style="width:100%">
+      <span>Message&nbsp&nbsp</span>
+      <input type="text" ng-model="message.message">
+    </label>
+    <div class="buttons" ng-click="sendMessage()">
+      <button class="button button-calm">&nbspSend&nbsp</button>
+    </div>
+  </ion-footer-bar>
+</ion-view>

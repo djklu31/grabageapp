@@ -8,37 +8,56 @@
 
     <!--</div>-->
 
-    <ul class="list">
+    <ion-list can-swipe="true">
       <div class="item item-divider">
         New Interests
       </div>
-      <div class="item center" ng-show="noNewInterests">
+      <div class="item center" ng-show="(newInterests && newInterests.length === 0) || !newInterests">
         -No New Interests-
       </div>
-      <ion-item class="item" ng-repeat="interest in newInterests" ui-sref="app.browseuseritems({userid: interest.interesteduserid, itemname: interest.itemname, requestid: interest.requestid, itemid: itemId, interestid: interest._id, beenseen: interest.beenseen})">
-        {{interest.interesteduser}}
+      <ion-item class="item item-text-wrap item-remove-animate" ng-repeat="interest in newInterests" ui-sref="app.browseuseritems({userid: interest.interesteduserid, itemname: interest.itemname, requestid: interest.requestid, itemid: itemId, interestid: interest._id, beenseen: interest.beenseen})">
+        <span ng-class="{strikethrough: (interest.status === 'Offer Made' || interest.status === 'Interest Declined')}">
+          {{interest.interesteduser}}
+        </span>
+
+        <div class="item-icon-right">
+          <i class="icon ion-chevron-left icon-accessory"></i>
+        </div>
+
+        <ion-option-button class="button-assertive" ng-click="deleteInterest(interest._id, 'new', $index)">
+          Delete
+        </ion-option-button>
+
         <p ng-show="interest.status === 'Offer Made'" style="color: darkgreen">Offer Made</p>
         <p ng-show="interest.status === 'Pending'" style="color: darkgoldenrod">Pending</p>
         <p ng-show="interest.status === 'Interest Declined'" style="color: darkred">Interest Declined</p>
+
       </ion-item>
       <div class="item item-divider">
         Old Interests
       </div>
-      <div class="item center" ng-show="noOldInterests">
-        -No New Interests-
+      <div class="item center" ng-show="(oldInterests && oldInterests.length === 0) || !oldInterests">
+        -No Old Interests-
       </div>
-      <ion-list ng-repeat="interest in oldInterests">
-        <ion-item class="item" ui-sref="app.browseuseritems({userid: interest.interesteduserid, itemname: interest.itemname, requestid: interest.requestid, itemid: itemId, interestid: interest._id, beenseen: interest.beenseen})">
-          <li ng-class="{strikethrough: (interest.status === 'Offer Made' || interest.status === 'Interest Declined')}">
-              {{interest.interesteduser}}
-          </li>
+      <ion-item ng-repeat="interest in oldInterests" class="item item-text-wrap item-remove-animate" ui-sref="app.browseuseritems({userid: interest.interesteduserid, itemname: interest.itemname, requestid: interest.requestid, itemid: itemId, interestid: interest._id, beenseen: interest.beenseen})">
+        <span ng-class="{strikethrough: (interest.status === 'Offer Made' || interest.status === 'Interest Declined')}">
+            {{interest.interesteduser}}
+        </span>
 
-          <p ng-show="interest.status === 'Offer Made'" style="color: darkgreen">Offer Made</p>
-          <p ng-show="interest.status === 'Pending'" style="color: darkgoldenrod">Pending</p>
-          <p ng-show="interest.status === 'Interest Declined'" style="color: darkred">Interest Declined</p>
+        <div class="item-icon-right">
+          <i class="icon ion-chevron-left icon-accessory"></i>
+        </div>
 
-        </ion-item>
-      </ion-list>
-    </ul>
+        <ion-option-button class="button-assertive" ng-click="deleteInterest(interest._id, 'old', $index)">
+          Delete
+        </ion-option-button>
+
+        <p ng-show="interest.status === 'Offer Made'" style="color: darkgreen">Offer Made</p>
+        <p ng-show="interest.status === 'Pending'" style="color: darkgoldenrod">Pending</p>
+        <p ng-show="interest.status === 'Interest Declined'" style="color: darkred">Interest Declined</p>
+
+
+      </ion-item>
+    </ion-list>
   </ion-content>
 </ion-view>

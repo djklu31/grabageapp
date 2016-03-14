@@ -20,18 +20,19 @@
 
       </div>
 
-      <div class="item center">
+      <div class="item center" ng-show="!myItem">
         <h3>Offered by: {{userData.username}}</h3>
         <p>Located in: {{userData.location}}</p>
 
         <button class="button button-block button-balanced" ng-click="interested()" ng-show="!alreadyInterested">I'm Interested</button>
         <button class="button button-block button-assertive" ng-disabled="true" ng-show="alreadyInterested">Already interested</button>
+        <button class="button button-block button-positive" ng-click="openMessageBox()">Message User</button>
       </div>
 
       <div class="item center" ng-show="myItem">
         <h3 ng-class="{red: (interestLength === 0), green: (interestLength > 0)}">{{interestLength}} people are interested in this item.</h3>
 
-        <button class="button button-block button-positive" ui-sref="app.browseusers({id: itemId})" ng-disabled="interestLength === 0">Make A Deal</button>
+        <button class="button button-block button-dark" ui-sref="app.browseusers({id: itemId, itemname: itemname})" ng-disabled="interestLength === 0">Make A Deal</button>
 
       </div>
 

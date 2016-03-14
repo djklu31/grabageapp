@@ -28,18 +28,22 @@
         </div>
         <ion-item menu-close ui-sref="app.mydaytrader">
           <i class="icon ion-ios-home"></i>&nbsp
-          My Day Trader
+          My Tradar
         </ion-item>
         <ion-item menu-close ui-sref="app.messages">
           <i class="icon ion-email"></i>&nbsp
-          Messages ({{messageLength}})
+          Messages <span ng-class= "{brightgreen: newMessageCount !== 0}">({{newMessageCount}})</span>
         </ion-item>
         <div class="item item-divider">
           Offers
         </div>
         <ion-item menu-close ui-sref="app.seeofferlist">
-          <i class="ion-ribbon-a"></i>&nbsp
+          <i class="icon ion-ribbon-a"></i>&nbsp
           My Offers
+        </ion-item>
+        <ion-item menu-close ui-sref="app.messagetabs.messages">
+          <i class="icon ion-ios-cart"></i>&nbsp
+          Transactions
         </ion-item>
         <!--<ion-item menu-close ui-sref="app.outgoingoffers">-->
           <!--<i class="icon ion-paper-airplane"></i>&nbsp-->

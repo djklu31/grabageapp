@@ -3,15 +3,13 @@
  */
 angular.module('starter')
 
-.controller('BrowseUsersCtrl', function($scope, $http, SessionService, serverLocation, $stateParams, $q, $ionicLoading, $state, $ionicPopup) {
+.controller('BrowseUsersCtrl', function($scope, $http, SessionService, serverLocation, $stateParams, $q, $ionicLoading, $state, $ionicPopup, $ionicListDelegate) {
     $scope.itemId = $stateParams.id;
     var promises = [];
     $scope.usersArray = [];
     var requests = [];
     $scope.oldInterests = [];
     $scope.newInterests = [];
-    $scope.noNewInterests = false;
-    $scope.noOldInterests = false;
     var userId = SessionService.getUserId();
     $scope.itemName = $stateParams.itemname;
 
@@ -98,16 +96,35 @@ angular.module('starter')
     //
     //
     //        if($scope.oldInterests.length === 0){
-    //          $scope.noOldInterests = true;
     //        }
     //        if($scope.newInterests.length === 0) {
-    //          $scope.noNewInterests = true;
     //
     //        }
     //      })
     //
     //
     //  })
+
+    //$scope.$on('$ionicView.enter', function() {
+    //  $http.get(serverLocation + '/users/interests/' + userId)
+    //    .then(function(response) {
+    //      //console.log(response.data[0].interests);
+    //
+    //      angular.forEach(response.data[0].interests, function(interest, key) {
+    //        //console.log(interest);
+    //
+    //        if(interest.beenseen == false && interest.itemid === $scope.itemId) {
+    //          $scope.newInterests.push(interest);
+    //        } else if (interest.beenseen == true && interest.itemid === $scope.itemId) {
+    //          $scope.oldInterests.push(interest);
+    //        }
+    //      })
+    //
+    //      console.log("NEW INTERESTS :" + JSON.stringify($scope.newInterests))
+    //      console.log("OLD INTERESTS :" + $scope.oldInterests)
+    //
+    //    })
+    //});
 
     $http.get(serverLocation + '/users/interests/' + userId)
       .then(function(response) {
@@ -128,6 +145,21 @@ angular.module('starter')
 
 
       })
+
+    $scope.deleteInterest = function(id, age, index) {
+
+      $http.put(serverLocation + '/users/interest/remove/' + id)
+        .then(function(response) {
+
+          if(age === 'new') {
+            $scope.newInterests.splice(index, 1);
+          } else if(age === 'old') {
+            $scope.oldInterests.splice(index, 1);
+          }
+
+        })
+
+    }
 
 
 

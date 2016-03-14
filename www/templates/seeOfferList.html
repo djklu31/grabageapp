@@ -1,15 +1,22 @@
-<ion-view title="See Offer">
+<ion-view title="Choose an Offer">
   <ion-content padding>
 
-    <ion-list class="list" show-delete="shouldShowDelete" can-swipe="true">
+    <ion-list class="list" can-swipe="true">
       <div class="item item-divider">
         New Offers
       </div>
 
-      <ion-item class="item item-text-wrap" ng-repeat="offer in newOffers" ui-sref="app.seeoffer({requestid: offer.requestid, offereduserid: offer.offereduserid, itemid: offer.itemid, itemname: offer.itemname, offerid: offer._id, beenseen: offer.beenseen})">
+      <div class="item center" ng-show="(newOffers && newOffers.length === 0) || !newOffers">
+        -No New Offers-
+      </div>
+
+      <ion-item class="item item-text-wrap item-remove-animate" ng-repeat="offer in newOffers" ui-sref="app.seeoffer({requestid: offer.requestid, offereduserid: offer.offereduserid, itemid: offer.itemid, itemname: offer.itemname, offerid: offer._id, beenseen: offer.beenseen})">
         <h3>{{offer.itemname}}</h3>
         <p>{{offer.ownername}} has offered this item for {{offer.proposedlength}} of your items.</p>
-        <ion-option-button class="button-assertive" ng-click="delete(offer._id)">
+        <div class="item-icon-right">
+          <i class="icon ion-chevron-left icon-accessory"></i>
+        </div>
+        <ion-option-button class="button-assertive" ng-click="deleteOffer(offer._id, 'new', $index)">
           Delete
         </ion-option-button>
 
@@ -21,11 +28,21 @@
       <div class="item item-divider">
         Old Offers
       </div>
-      <ion-item class="item item-text-wrap" ng-repeat="offer in oldOffers" ui-sref="app.seeoffer({requestid: offer.requestid, offereduserid: offer.offereduserid, itemid: offer.itemid, itemname: offer.itemname, offerid: offer._id, beenseen: offer.beenseen})">
+
+      <div class="item center" ng-show="(oldOffers && oldOffers.length === 0) || !oldOffers">
+        -No Old Offers-
+      </div>
+
+      <ion-item class="item item-text-wrap item-remove-animate" ng-repeat="offer in oldOffers" ui-sref="app.seeoffer({requestid: offer.requestid, offereduserid: offer.offereduserid, itemid: offer.itemid, itemname: offer.itemname, offerid: offer._id, beenseen: offer.beenseen})">
         <h3 ng-class="{strikethrough: (offer.offerstatus === 'Offer Accepted' || offer.offerstatus === 'Offer Declined')}">{{offer.itemname}}</h3>
 
         <p>{{offer.ownername}} has offered this item for {{offer.proposedlength}} of your items.</p>
-        <ion-option-button class="button-assertive" ng-click="delete(offer._id)">
+
+        <div class="item-icon-right">
+          <i class="icon ion-chevron-left icon-accessory"></i>
+        </div>
+
+        <ion-option-button class="button-assertive" ng-click="deleteOffer(offer._id, 'old', $index)">
           Delete
         </ion-option-button>
 

@@ -13,11 +13,21 @@ angular.module('starter')
     $http.get(serverLocation + '/users/' + SessionService.getUserAuthenticated())
       .then(function(response) {
 
-      userData = response.data;
+        userData = response.data;
 
-      $scope.username = userData.username;
+        $scope.username = userData.username;
 
-      $scope.messageLength = userData.messages.length;
+        $scope.newMessageCount = 0;
+
+        for(var i = 0; i < userData.messages.length; ++i) {
+
+          if(userData.messages[i].beenseen === false) {
+            $scope.newMessageCount++;
+          }
+
+        }
+
+
 
     })
 

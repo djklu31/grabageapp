@@ -179,7 +179,7 @@ angular.module('starter')
     }
 
 
-    $http.get(serverLocation + '/items/user/' + ownerId)
+    $http.get(serverLocation + '/users/items/' + ownerId)
       .then(function(response) {
         $scope.itemData = response.data;
         console.log($scope.itemData);

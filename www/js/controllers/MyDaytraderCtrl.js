@@ -3,12 +3,12 @@
  */
 angular.module('starter')
 
-.controller('MyDaytraderCtrl', function($scope, $http, $state, serverLocation, SessionService, $ionicLoading) {
+.controller('MyDaytraderCtrl', function($scope, $http, $state, serverLocation, SessionService, $ionicLoading, $ionicListDelegate) {
 
     $scope.userData = {};
     $scope.itemsExist = false;
     var id = SessionService.getUserId();
-    $scope.noNotifications = false;
+    var interestCount = 0;
 
 
     $scope.$on('$ionicView.enter', function() {
@@ -28,7 +28,7 @@ angular.module('starter')
       //  });
       fetchNotifications();
 
-      $scope.noNotes = false;
+      //$scope.noNotes = false;
 
       $scope.show = function() {
         $ionicLoading.show({
@@ -45,13 +45,30 @@ angular.module('starter')
       $scope.show();
 
 
-      $http.get(serverLocation + '/items/user/' + id)
+      $http.get(serverLocation + '/users/items/' + id)
         .then(function(response) {
           $scope.userData = response.data;
 
           //console.log($scope.userData);
 
           $scope.hide();
+
+          $http.get(serverLocation + '/users/interests/' + id)
+            .then(function(response) {
+              angular.forEach($scope.userData, function(item, key) {
+                interestCount = 0;
+                angular.forEach(response.data[0].interests, function(interest, key) {
+                  if(interest.itemid === item._id) {
+                    interestCount++;
+                  }
+                })
+
+                item.interestLength = interestCount;
+
+              })
+
+              console.log($scope.userData);
+            })
 
           if($scope.userData.length == 0) {
 
@@ -68,7 +85,7 @@ angular.module('starter')
 
 
     $scope.doRefresh = function() {
-      $http.get(serverLocation + '/items/user/' + id)
+      $http.get(serverLocation + '/users/items/' + id)
         .then(function(response) {
 
 
@@ -79,6 +96,23 @@ angular.module('starter')
             $scope.noDataMsg = "<h1>Welcome " + SessionService.getUserAuthenticated() + "!<br>You have no items.  Add some of your \"junk\" now and you may come up with a treasure." + "<br>" + "-Confucious"
           } else {
             $scope.itemsExist = true;
+
+            $http.get(serverLocation + '/users/interests/' + id)
+              .then(function(response) {
+                angular.forEach($scope.userData, function(item, key) {
+                  interestCount = 0;
+                  angular.forEach(response.data[0].interests, function(interest, key) {
+                    if(interest.itemid === item._id) {
+                      interestCount++;
+                    }
+                  })
+
+                  item.interestLength = interestCount;
+
+                })
+
+                console.log($scope.userData);
+              })
 
           }
         })
@@ -99,14 +133,13 @@ angular.module('starter')
         .then(function(response) {
 
 
-
           $scope.notifications = response.data.notifications;
 
           console.log($scope.notifications)
 
-          if(($scope.notifications && $scope.notifications.length === 0) || !$scope.notifications){
-            $scope.noNotes = true;
-          }
+          //if(($scope.notifications && $scope.notifications.length === 0) || !$scope.notifications){
+          //  $scope.noNotes = true;
+          //}
 
 
 
@@ -123,7 +156,7 @@ angular.module('starter')
 
               $scope.notifications[key].icon = 'icon ion-backspace-outline';
 
-              $scope.notifications[key].url = 'app.mydaytrader({reload: true})';
+              $scope.notifications[key].url = 'app.mydaytrader';
 
 
             } else if (data.type === "Offer Declined") {
@@ -135,7 +168,7 @@ angular.module('starter')
 
               $scope.notifications[key].icon = 'icon ion-backspace';
 
-              $scope.notifications[key].url = 'app.mydaytrader({reload: true})';
+              $scope.notifications[key].url = 'app.mydaytrader';
 
 
 
@@ -168,22 +201,33 @@ angular.module('starter')
 
               $scope.notifications[key].url = 'app.messages'
 
+            } else if (data.type === "New Message") {
+
+              var message = data.username + " has sent you a message regarding " + data.itemname + ".";
+
+              $scope.notifications[key].message = message;
+
+              $scope.notifications[key].icon = 'icon ion-ios-email';
+
+              $scope.notifications[key].url = 'app.chatlog({id: note.messageid, otheruser: note.otherusername})'
+
             }
 
           })
-          $scope.noNotifications = false;
 
-          if($scope.notifications.length === 0) {
-            $scope.noNotifications = true;
-          }
+
 
         })
 
     }
 
-    $scope.removeNotification = function(id) {
+    $scope.removeNotification = function(id, index) {
       console.log(id)
       $http.put(serverLocation + '/users/notifications/delete/' + id)
+        .then(function(response) {
+          $scope.notifications.splice($scope.notifications.length-1-index, 1);
+        })
     }
+
 
   });

@@ -24,13 +24,13 @@ angular.module('starter', ['ionic', 'ngCordova', 'ui.mask'])
       StatusBar.styleDefault();
     }
 
-    SessionService.setUserAuthenticated('djklu31');
-    SessionService.setUserId('56d6b70c2e2ce1731491269d');
+    //SessionService.setUserAuthenticated('djklu31');
+    //SessionService.setUserId('56d6b70c2e2ce1731491269d');
 
   });
 
-    SessionService.setUserAuthenticated('djklu31');
-    SessionService.setUserId('56d6b70c2e2ce1731491269d');
+    //SessionService.setUserAuthenticated('djklu31');
+    //SessionService.setUserId('56d6b70c2e2ce1731491269d');
 
 
 })
@@ -41,123 +41,164 @@ angular.module('starter', ['ionic', 'ngCordova', 'ui.mask'])
       .state('login', {
         url: '/login',
         templateUrl: 'templates/loginScreen.html',
-        controller: 'LoginScreenCtrl'
+        controller: 'LoginScreenCtrl',
+        cache: false,
       })
       .state('createusermenu', {
         url: '/createusermenu',
         abstract: true,
         templateUrl: 'templates/createUserMenu.html',
-        controller: 'CreateUserMenu'
+        controller: 'CreateUserMenu',
+        cache: false,
       })
 
       .state('app', {
         url: '/app',
         abstract: true,
-        cache: false,
         templateUrl: 'templates/menu.html',
-        controller: 'MainController'
+        controller: 'MainController',
+        cache: false,
+
+      })
+      .state('app.messagetabs', {
+        url: '/messagetabs',
+        abstract: true,
+        views: {
+          'menuContent':{
+            templateUrl: 'templates/messageTabs.html'
+          }
+        }
       })
       .state('createusermenu.adduser', {
         url: '/adduser',
         views: {
           'menuContent':{
             templateUrl: 'templates/addUser.html',
-            controller: 'AddUserController'
+            controller: 'AddUserController',
           }
-        }
+        },
+        cache: false,
       })
       .state('app.outgoingoffers', {
         url: '/outgoingoffers',
         views: {
           'menuContent':{
             templateUrl: 'templates/outgoingOffers.html',
-            controller: 'OutgoingOffersCtrl'
+            controller: 'OutgoingOffersCtrl',
           }
-        }
+        },
+        cache: false,
       })
       .state('app.additem', {
         url: '/additem',
         views: {
           'menuContent':{
             templateUrl: 'templates/addItem.html',
-            controller: 'AddItemCtrl'
+            controller: 'AddItemCtrl',
           }
-        }
+        },
+        cache: false,
       })
       .state('app.browseusers', {
         url: '/browseusers/:id?:itemname',
         views: {
           'menuContent':{
-            templateUrl: 'templates/browseusers.html',
-            controller: 'BrowseUsersCtrl'
+            templateUrl: 'templates/browseUsers.html',
+            controller: 'BrowseUsersCtrl',
           }
-        }
+        },
+        cache: false,
       })
       .state('app.browseuseritems', {
         url: '/browseuseritems/:userid?:itemname?:requestid?:itemid?:interestid?:beenseen',
         views: {
           'menuContent':{
             templateUrl: 'templates/browseUserItems.html',
-            controller: 'BrowseUserItemsCtrl'
+            controller: 'BrowseUserItemsCtrl',
           }
-        }
+        },
+        cache: false,
       })
       .state('app.seeoffer', {
         url: '/seeoffer/:requestid?:itemname?:itemid?:offereduserid?:offerid?:beenseen',
         views: {
           'menuContent':{
             templateUrl: 'templates/seeOffer.html',
-            controller: 'SeeOfferCtrl'
+            controller: 'SeeOfferCtrl',
           }
-        }
+        },
+        cache: false,
       })
       .state('app.seeofferlist', {
         url: '/seeofferlist',
         views: {
           'menuContent':{
             templateUrl: 'templates/seeOfferList.html',
-            controller: 'SeeOfferListCtrl'
+            controller: 'SeeOfferListCtrl',
           }
-        }
+        },
+        cache: false,
       })
       .state('app.edititemlist', {
         url: '/edititemlist',
-        cache: false,
         views: {
           'menuContent':{
-            templateUrl: 'templates/edititemlist.html',
-            controller: 'EditItemListCtrl'
+            templateUrl: 'templates/editItemList.html',
+            controller: 'EditItemListCtrl',
           }
-        }
+        },
+        cache: false,
       })
       .state('app.edititem', {
         url: '/edititem/:id',
         views: {
           'menuContent':{
-            templateUrl: 'templates/edititem.html',
-            controller: 'EditItemCtrl'
+            templateUrl: 'templates/editItem.html',
+            controller: 'EditItemCtrl',
           }
-        }
+        },
+        cache: false,
       })
+      //.state('app.sendmessage', {
+      //  url: '/sendmessage/:receiptid:itemid',
+      //  views: {
+      //    'menuContent':{
+      //      templateUrl: 'templates/sendMessage.html',
+      //      controller: 'SendMessageCtrl'
+      //    }
+      //  }
+      //})
       .state('app.item', {
         url: '/item/:id?:itemname?:brand',
         views: {
           'menuContent':{
             templateUrl: 'templates/item.html',
-            controller: 'ItemCtrl'
+            controller: 'ItemCtrl',
           }
-        }
+        },
+        cache: false,
       })
       .state('app.messages', {
         url: '/messages',
-        cache: false,
         views: {
           'menuContent':{
             templateUrl: 'templates/messages.html',
             controller: 'MessagesCtrl',
             //resolve: { authenticate: authenticate }
           }
-        }
+        },
+        cache: false,
+      })
+      .state('app.chatlog', {
+        url: '/chatlog/:id?:otheruser',
+        views: {
+          'menuContent':{
+            templateUrl: 'templates/chatlog.html',
+            controller: 'ChatlogCtrl',
+            //resolve: { authenticate: authenticate }
+          }
+        },
+        cache: false,
       })
       .state('app.manageitems', {
         url: '/manageitems',
@@ -167,7 +208,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'ui.mask'])
             controller: 'ManageItemsCtrl',
             //resolve: { authenticate: authenticate }
           }
-        }
+        },
+        cache: false,
       })
       .state('app.editprofile', {
         url: '/editprofile',
@@ -177,7 +219,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'ui.mask'])
             controller: 'EditProfileCtrl',
             //resolve: { authenticate: authenticate }
           }
-        }
+        },
+        cache: false,
       })
 
       .state('app.getusers', {
@@ -185,9 +228,21 @@ angular.module('starter', ['ionic', 'ngCordova', 'ui.mask'])
         views: {
           'menuContent' :{
             templateUrl: 'templates/getUsers.html',
-            controller: 'GetUsersController'
+            controller: 'GetUsersController',
           }
-        }
+        },
+        cache: false,
+      })
+
+      .state('app.messages.transactions', {
+        url: '/transactions',
+        views: {
+          'transactions' :{
+            templateUrl: 'templates/transactions.html',
+            controller: 'TransactionsCtrl',
+          }
+        },
+        cache: false,
       })
 
       .state('app.mydaytrader', {
@@ -198,7 +253,8 @@ angular.module('starter', ['ionic', 'ngCordova', 'ui.mask'])
             controller: 'MyDaytraderCtrl',
             //resolve: { authenticate: authenticate }
           }
-        }
+        },
+        cache: false
       })
       .state('logout', {
         url: '/logout',
