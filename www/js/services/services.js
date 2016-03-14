@@ -6,7 +6,8 @@ angular.module('starter')
 
 .factory('serverLocation', function() {
     //return 'http://localhost:3000';
-    return 'https://daytraderserver.herokuapp.com';
+    return '';
+    //return 'https://daytraderserver.herokuapp.com';
   })
 
 .service('SessionService', function() {

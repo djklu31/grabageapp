@@ -1,1 +1,1 @@
-web: ionic serve
+web: node ./api/server.js
