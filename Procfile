@@ -1,1 +1,1 @@
-web: node /api/server.js
+web: cd api; npm start
