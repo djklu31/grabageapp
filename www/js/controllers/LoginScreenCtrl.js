@@ -67,4 +67,11 @@ angular.module('starter')
           })
       }
     }
+
+    $scope.fbLogin = function() {
+      console.log("FB LOGIN");
+
+
+      $state.go('app.fblogin');
+    }
   });

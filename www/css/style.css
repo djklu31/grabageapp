@@ -4,6 +4,11 @@
   text-align: center;
 }
 
+.centermargin {
+  margin-right: auto;
+  margin-left: auto;
+}
+
 [nav-view-transition][nav-view-direction] {
   background-color: transparent;
 }

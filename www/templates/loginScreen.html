@@ -1,12 +1,14 @@
-<ion-view title="Welcome to Day Tradar">
+<ion-view title="Welcome to Grabage">
 
-  <ion-content padding="true" style="background-image: url('img/space.jpg')" class="slide-left-right">
+  <ion-content padding="true" style="background-image: url('img/city2.jpg'); background-position: bottom;" class="slide-left-right">
 
     <div class="center">
-      <img ng-src="img/logo4.png" style="width: 90%; margin-top: 150px; max-width: 400px">
+      <div class="centermargin" style="background-color: rgba(45,45,45,.35); padding-top:10px; padding-bottom: 10px; margin-top: 95px; max-width: 500px">
+        <img ng-src="img/3xgrabagewhite.png" style="width: 100%;">
+      </div>
     </div>
 
-      <form name="loginForm" style="margin-top: 50px; max-width: 550px; margin-left: auto; margin-right: auto" ng-submit="checkUser()">
+      <form name="loginForm" style="margin-left: auto; margin-right: auto; max-width: 500px" ng-submit="checkUser()">
         <div class="card">
           <label class="item item-input">
             <span class="input-label">Username</span>
@@ -18,10 +20,17 @@
           </label>
         </div>
 
-        <button class="button-block button button-dark" type="submit">Login</button>
+        <button class="button-block button button-balanced" type="submit">Login</button>
       </form>
 
-    <div class="center"><a ui-sref="createusermenu.adduser" style="color: white">Create a new account</a></div>
+    <div class="centermargin" style="background-color: rgba(0,0,0,0.15); padding-top:0px; padding-bottom: 0px; max-width: 145px">
+      <div class="center"><a ui-sref="createusermenu.adduser" style="color: white">Create a new account</a></div>
+    </div>
+
+    <div style="text-align:center; padding-top: 50px">
+      <img ng-src="img/fbbutton.png" style="width: 70%; max-width: 250px" ng-click="fbLogin()">
+    </div>
+
 
   </ion-content>
 

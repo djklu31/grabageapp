@@ -60,6 +60,16 @@ angular.module('starter', ['ionic', 'ngCordova', 'ui.mask'])
         cache: false,
 
       })
+      .state('app.fblogin', {
+        url: '/fblogin',
+        views: {
+          'menuContent': {
+            templateUrl: 'templates/fblogin.html',
+            controller: 'FbLoginCtrl'
+          }
+        },
+        cache: false
+      })
       .state('app.messagetabs', {
         url: '/messagetabs',
         abstract: true,
